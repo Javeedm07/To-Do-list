@@ -1,0 +1,93 @@
+<%- include('partials/header.ejs'); -%>
+
+<div class="header">
+  <h1><%= listTitle %></h1>
+</div>
+
+<!-- Error message container -->
+<div 
+  id="error-box" 
+  class="error-message" 
+  style="<%= error && error.trim() ? '' : 'display: none;' %>">
+  <p><%= error %></p>
+</div>
+
+<div class="todo-container">
+  <% for(let item of listItems) { %>
+    <div class="todo-item">
+      <form action="/delete" method="post" class="delete-form">
+        <input
+          type="checkbox"
+          class="todo-checkbox"
+          onchange="this.form.submit()"
+          name="deleteItemId"
+          value="<%= item.id %>"
+        />
+      </form>
+
+      <p id="title<%=item.id%>"><%= item.title %></p>
+
+      <form class="edit-form" action="/edit" method="post">
+        <input type="hidden" name="updatedItemId" value="<%= item.id %>" />
+        <input
+          id="input<%=item.id%>"
+          class="edit-input"
+          type="text"
+          name="updatedItemTitle"
+          value="<%= item.title %>"
+          autocomplete="off"
+          hidden="true"
+        />
+        <button 
+          id="done<%=item.id%>" 
+          class="btn-icon" 
+          type="submit" 
+          hidden
+        >
+          <img
+            class="icon"
+            src="/assets/icons/check-solid.svg"
+            alt="Save"
+          />
+        </button>
+      </form>
+
+      <button
+        id="edit<%=item.id%>"
+        class="btn-icon"
+        onclick="handler('<%=item.id%>')"
+      >
+        <img
+          class="icon"
+          src="/assets/icons/pencil-solid.svg"
+          alt="Edit"
+        />
+      </button>
+    </div>
+  <% } %>
+
+  <form class="todo-input-container" action="/add" method="post">
+    <input
+      type="text"
+      name="newItem"
+      class="todo-input"
+      placeholder="Add a new task..."
+      autocomplete="off"
+    />
+    <button class="btn btn-primary" type="submit" name="list" value="<%= listTitle %>">
+      Add Task
+    </button>
+  </form>
+</div>
+
+<script>
+  function handler(id) {
+    document.getElementById("title" + id).setAttribute("hidden", true);
+    document.getElementById("edit" + id).setAttribute("hidden", true);
+    document.getElementById("done" + id).removeAttribute("hidden");
+    document.getElementById("input" + id).removeAttribute("hidden");
+    document.getElementById("input" + id).focus();
+  }
+</script>
+
+<%- include('partials/footer.ejs'); -%>
