@@ -1,4 +1,4 @@
-# TaskFlow - Modern Todo List Application
+# Modern Todo List Application
 
 A modern, responsive todo list application built with Node.js, Express, and PostgreSQL. Features a clean interface with real-time task management capabilities.
 
